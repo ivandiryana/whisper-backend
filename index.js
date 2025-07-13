@@ -1,4 +1,9 @@
 require("dotenv").config();
+
+console.log("✅ Starting app...");
+console.log("✅ OPENAI_API_KEY loaded:", !!process.env.OPENAI_API_KEY);
+console.log("✅ PORT:", process.env.PORT);
+
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
