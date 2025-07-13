@@ -8,7 +8,7 @@ const axios = require("axios");
 const FormData = require("form-data");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT; 
 
 app.use(cors());
 const upload = multer({ storage: multer.memoryStorage() });
