@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 const upload = multer({ storage: multer.memoryStorage() });
 
-// 🟢 Health check
+// ✅ Tambahkan route GET /
 app.get("/", (req, res) => {
   res.send("✅ Whisper backend is running!");
 });
