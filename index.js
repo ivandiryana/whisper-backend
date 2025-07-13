@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Endpoint test
+// 🟢 Health check
 app.get("/", (req, res) => {
   res.send("✅ Whisper backend is running!");
 });
@@ -21,14 +21,11 @@ app.get("/", (req, res) => {
 app.post("/evaluateRecitation", upload.single("audio"), async (req, res) => {
   try {
     if (!req.file) {
-      console.log("❌ No file uploaded");
       return res.status(400).json({ error: "No audio file uploaded" });
     }
 
-    console.log("✅ Audio file received:", req.file.originalname);
     const tempPath = path.join(os.tmpdir(), `audio_${Date.now()}.m4a`);
     fs.writeFileSync(tempPath, req.file.buffer);
-    console.log("✅ Audio saved at:", tempPath);
 
     const form = new FormData();
     form.append("file", fs.createReadStream(tempPath));
@@ -48,18 +45,14 @@ app.post("/evaluateRecitation", upload.single("audio"), async (req, res) => {
     );
 
     fs.unlinkSync(tempPath);
-    console.log("✅ Transcription successful");
 
     res.json({
       success: true,
       transcription: whisperResponse.data.text,
     });
   } catch (err) {
-    console.error("❌ Whisper error:", err.response?.data || err.message);
-    res.status(500).json({
-      error: "Failed",
-      details: err.response?.data || err.message,
-    });
+    console.error("Whisper error:", err.response?.data || err.message);
+    res.status(500).json({ error: "Failed", details: err.response?.data || err.message });
   }
 });
 
