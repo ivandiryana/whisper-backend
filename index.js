@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
@@ -8,7 +9,10 @@ const axios = require("axios");
 const FormData = require("form-data");
 
 const app = express();
-const port = process.env.PORT; 
+const port = process.env.PORT || 3000;
+
+// Opsional: Cek apakah API key terbaca
+console.log("✅ OPENAI_API_KEY loaded?", !!process.env.OPENAI_API_KEY);
 
 app.use(cors());
 const upload = multer({ storage: multer.memoryStorage() });
@@ -51,7 +55,10 @@ app.post("/evaluateRecitation", upload.single("audio"), async (req, res) => {
     });
   } catch (err) {
     console.error("Whisper error:", err.response?.data || err.message);
-    res.status(500).json({ error: "Failed", details: err.response?.data || err.message });
+    res.status(500).json({
+      error: "Failed",
+      details: err.response?.data || err.message,
+    });
   }
 });
 
