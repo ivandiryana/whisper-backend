@@ -1,8 +1,14 @@
-require("dotenv").config();
+try {
+  require("dotenv").config();
+  console.log("✅ .env file loaded");
+} catch (err) {
+  console.warn("⚠️  .env file not found or failed to load:", err.message);
+}
+
 
 console.log("✅ Starting app...");
-console.log("✅ OPENAI_API_KEY loaded:", !!process.env.OPENAI_API_KEY);
-console.log("✅ PORT:", process.env.PORT);
+console.log("✅ OPENAI_API_KEY loaded?", !!process.env.OPENAI_API_KEY);
+console.log("✅ PORT:", process.env.PORT || 8080);
 
 const express = require("express");
 const cors = require("cors");
@@ -16,7 +22,7 @@ const FormData = require("form-data");
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Opsional: Cek apakah API key terbaca
+
 console.log("✅ OPENAI_API_KEY loaded?", !!process.env.OPENAI_API_KEY);
 
 app.use(cors());
